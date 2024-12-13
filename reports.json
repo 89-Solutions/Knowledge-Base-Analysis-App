@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Report 1",
+        "connector": "test",
+        "details": "FreshService\r\n"
+    },
+    {
+        "id": 2,
+        "name": "Report 2",
+        "connector": "test 2",
+        "details": "ServiceNow"
+    },
+    {
+        "id": 3,
+        "name": "Report 3",
+        "connector": "test 3",
+        "details": "SharePoint"
+    },
+    {
+        "id": 4,
+        "name": "Report 4",
+        "connector": "test 4",
+        "details": "Confluence"
+    }
+]

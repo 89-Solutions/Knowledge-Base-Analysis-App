@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "app_name": "Freshservice",
+        "connector_name": "test",
+        "user_email": "anuj.j@89solutions.com",
+        "details": {
+            "domain": "89solutionsdemo.freshservice.com",
+            "api_key": "ALLb2w6kS2RE7IpKGfU6"
+        }
+    },
+    {
+        "id": 2,
+        "app_name": "ServiceNow",
+        "connector_name": "test 2",
+        "user_email": "anuj.j@89solutions.com",
+        "details": {
+            "instance": "dev261429",
+            "username": "anuj.mwp",
+            "password": "j6AytA26GlHfhVT!"
+        }
+    },
+    {
+        "id": 3,
+        "app_name": "SharePoint",
+        "connector_name": "test 3",
+        "user_email": "anuj.j@89solutions.com",
+        "details": {
+            "tenant_id": "6577ac1e-59a5-4af5-9e8f-66500c45b3c1",
+            "client_id": "e0bb8e44-2a04-43b7-95f3-39dcbcb9e6b4",
+            "client_secret": "way8Q~ODmoxqyut3sVwb4NgYaBEepdJNzTBHgdAR",
+            "site_url": "https://89solutions.sharepoint.com/sites/TEST-MoveworksCRESTTesting"
+        }
+    },
+    {
+        "id": 4,
+        "app_name": "Confluence",
+        "connector_name": "test 4",
+        "user_email": "anuj.j@89solutions.com",
+        "details": {
+            "domain": "89solutionsdemo",
+            "username": "ajain@89solutionsdemo.com",
+            "api_token": "ATATT3xFfGF05_cRZmZjSTNHpi3_KVzN1BFO9yIehWH1yCI2bsKR7GmBw9hSwgCtQ4DgxsCF0-pfLsrgOUHVAPZh-VaJS5YBy01cCUFEN29fY7-z3k37zbypHgdLRp_j7leo64d6n--due2i5El22c8-p9jgqwLNoMlCnzXeSv0jizqIE47H9x8=2E28E9FA"
+        }
+    }
+]
