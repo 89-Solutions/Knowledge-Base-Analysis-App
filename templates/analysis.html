@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black !important;
+        }
+        thead th {
+            background-color: #f2f2f2 !important;
+        }
+        header {
+            background-color: #343a40; /* Dark gray */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #ffffff;
+        }
+        .navbar-toggler {
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center text-white" href="/">
+                <img src="/static/logo.png" alt="Logo" width="100" height="40" class="me-2">
+                <span class="fs-4">Knowledge Analyzer</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ url_for('admin') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ url_for('manage_reports') }}">Reports</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-light">Logout</a>
+                </form>
+            </div>
+        </div>
+    </header>
+    <main class="container mt-4">
+        <h1 class="text-center py-3">{{app_name}} Knowledge Base Compatibility Results</h1>
+        <div class="row mb-4">
+            {% for key, value in stats.items() %}
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ key }}</h5>
+                        <p class="card-text fs-5"><strong>{{ value }}</strong></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>               
+        <div class="table-responsive">
+            <table class="table table-bordered" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        {% if app_name == "Freshservice" %}
+                            <th>Category</th>
+                            <th>Folder</th>
+                        {% elif app_name == "ServiceNow" %}
+                            <th>Knowledge Base</th>
+                        {% elif app_name == "Confluence" %}
+                            <th>Space Name</th>
+                        {% else %}
+                        {% endif %}
+                        <th>Moveworks Compatibility</th>
+                        <th>Findings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr class="
+                        {% if result['row_class'] == 'compatible' %}table-success
+                        {% elif result['row_class'] == 'incompatible' %}table-danger
+                        {% elif result['row_class'] == 'needs-review' %}table-warning
+                        {% endif %}
+                    ">
+                        <td><a href="{{ result['link'] }}" target="_blank">{{ result['title'] }}</a></td>
+                        {% if app_name == "Freshservice" %}
+                            <td>{{ result['category_name'] }}</td>
+                            <td>{{ result['folder_name'] }}</td>
+                        {% elif app_name == "ServiceNow" %}
+                            <td>{{ result['knowledge_base'] }}</td>
+                        {% elif app_name == "Confluence" %}
+                            <td>{{ result['space_name'] }}</td>
+                        {% else %}
+                        {% endif %}
+                        <td>{{ result['status'] }}</td>
+                        <td>
+                            <ul class="mb-0 ps-3">
+                                {% for finding in result['findings'] %}
+                                <li>{{ finding }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mb-3">
+            <button id="downloadCsv" class="btn btn-primary">Download as CSV</button>
+        </div>
+    </main>
+    <script>
+        document.getElementById('downloadCsv').addEventListener('click', function () {
+            const table = document.getElementById('resultsTable');
+            const rows = table.querySelectorAll('tr');
+            let csvContent = '';
+
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('th, td');
+                const rowData = Array.from(cols).map(col => {
+                    const link = col.querySelector('a'); // Check if the column contains a link
+                    if (link) {
+                        // Include both the text and the href
+                        return `"${link.innerText.replace(/"/g, '""')} (${link.href})"`;
+                    } else {
+                        return `"${col.innerText.replace(/"/g, '""')}"`;
+                    }
+                }).join(',');
+                csvContent += rowData + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '{{ report_name }}.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+</html>
